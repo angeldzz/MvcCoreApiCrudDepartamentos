@@ -1,0 +1,76 @@
+﻿@section Scripts {
+    <script src="~/js/serviceapidepartamentos.js"></script>
+    <script>
+        // let url = "https:apicorecruddepartamentosapd.azurewebsites.net/";
+        $(document).ready(() => {
+            var data = loadDepartamentos();
+            console.log(data);
+            $("#botoninsert").click(() => {
+                let id = $("#cajaid").val();
+                let nombre = $("#cajanombre").val();
+                let localidad = $("#cajalocalidad").val();
+                createDepartamentoAsync(id, nombre, localidad, function(){
+                    loadDepartamentos();
+                })
+            })
+            $("#botonupdate").click(() => {
+                let dept = new Object();
+                let id = parseInt($("#cajaid").val());
+                let nombre = $("#cajanombre").val();
+                let localidad = $("#cajalocalidad").val();
+                updateDepartamentoAsync(id, nombre, localidad, function(){
+                    loadDepartamentos();
+                })
+            })
+            $("#botondelete").click(() => {
+                var id = $("#cajaid").val();
+                deleteDepartamentoAsync(id, function(){
+                    loadDepartamentos();
+                })
+            })
+        });
+        function loadDepartamentos() {
+            getDepartamentosAsync(function(data){
+                var html = "";
+                    $.each(data, function (index, dept){
+                       html += "<tr><td>"
+                           + dept.idDepartamento + "</td><td>"
+                           + dept.nombre +
+                           "</td><td>" +
+                           dept.localidad + "</td></tr>";
+                    });
+                    $("#tabladepartamentos tbody").html(html);
+            });
+        }
+    </script>
+}
+<h1>Api Departamentos Client</h1>
+
+<form>
+    <label for="cajaid">Id departamento:</label>
+    <input type="text" id="cajaid" name="cajaid">
+    <label for="cajanombre">Nombre:</label>
+    <input type="text" id="cajanombre" name="cajanombre">
+    <label for="cajalocalidad">Localidad:</label>
+    <input type="text" id="cajalocalidad" name="cajalocalidad">
+    <button type="button" id="botoninsert" class="btn btn-warning">
+        Insertar
+    </button>
+    <button type="button" id="botonupdate" class="btn btn-dark">
+        Update
+    </button>
+    <button type="button" id="botondelete" class="btn btn-danger">
+        Delete
+    </button>
+</form>
+
+<table class="table table-bordered table-striped" id="tabladepartamentos">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Localidad</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
