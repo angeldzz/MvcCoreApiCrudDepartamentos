@@ -46,5 +46,10 @@ namespace MvcCoreApiCrudDepartamentos.Controllers
             await this.service.UpdateDepartamentoAsync(dept.IdDepartamento, dept.Nombre, dept.Localidad);
             return RedirectToAction("Index");
         }
+        public async Task<IActionResult> Delete(int id)
+        {
+            await this.service.DeleteDepartamentoAsync(id);
+            return RedirectToAction("Index");
+        }
     }
 }
